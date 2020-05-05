@@ -9,7 +9,7 @@ from tornado.websocket import websocket_connect
 from tornado.httpclient import HTTPRequest, AsyncHTTPClient
 
 import dingtalk
-from settings import GOTIFY_HTTP_URL, GOTIFY_WS_URL, GOTIFY_USER, GOTIFY_PASS, GOTIFY_HOST, GOTIFY_PORT
+from settings import GOTIFY_HTTP_URL, GOTIFY_WS_URL, GOTIFY_USER, GOTIFY_PASS, loop
 
 STREAM_MSG = urljoin(GOTIFY_WS_URL, "stream")
 MSG_ID = urljoin(GOTIFY_HTTP_URL, "/message") + "/{msg_id}"
@@ -29,7 +29,12 @@ async def conn_gotify():
     req = HTTPRequest(url=STREAM_MSG,
                       auth_mode='basic',
                       auth_username=GOTIFY_USER, auth_password=GOTIFY_PASS)
-    conn = await websocket_connect(req)
+    try:
+        conn = await websocket_connect(req)
+    except Exception as e:
+        logging.error(e)
+        loop.stop()
+        return
     while True:
         msg: str = await conn.read_message()
         if msg is None:

@@ -1,6 +1,7 @@
 # coding=utf-8
 # __author__ = 'Mio'
 import json
+import logging
 from collections import namedtuple
 from typing import List
 
@@ -16,7 +17,7 @@ async def _send(body: dict) -> None:
         body=json.dumps(body)
     )
     res = await AsyncHTTPClient().fetch(req)
-    print(res)
+    logging.info(f"{res.code} {body}")
 
 
 async def send_text(content: str, atMobiles: List[str] = None, isAtAll: bool = None) -> None:

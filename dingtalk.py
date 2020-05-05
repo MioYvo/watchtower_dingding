@@ -39,7 +39,7 @@ async def send_link(text, title, messageUrl, picUrl="") -> None:
         "link": {
             "text": text + f"\n\r{DINGTALK_ROBOT_KEYWORD}",
             "title": title,
-            "picUrl": "",
+            "picUrl": picUrl,
             "messageUrl": messageUrl
         }
     }

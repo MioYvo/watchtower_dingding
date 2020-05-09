@@ -21,7 +21,10 @@ async def delete_msg(msg_id):
     req = HTTPRequest(url=d_, method="DELETE",
                       auth_mode='basic',
                       auth_username=GOTIFY_USER, auth_password=GOTIFY_PASS)
-    await AsyncHTTPClient().fetch(req)
+    try:
+        await AsyncHTTPClient().fetch(req)
+    except Exception as e:
+        logging.error(e)
 
 
 async def conn_gotify():

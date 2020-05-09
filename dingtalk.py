@@ -16,8 +16,12 @@ async def _send(body: dict) -> None:
         headers={"Content-Type": "application/json"},
         body=json.dumps(body)
     )
-    res = await AsyncHTTPClient().fetch(req)
-    logging.info(f"{res.code} {body}")
+    try:
+        res = await AsyncHTTPClient().fetch(req)
+    except Exception as e:
+        logging.error(e)
+    else:
+        logging.info(f"{res.code} {body}")
 
 
 async def send_text(content: str, atMobiles: List[str] = None, isAtAll: bool = None) -> None:
